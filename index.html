@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rich Davis · vgcrld</title>
+  <meta name="description" content="Infrastructure tooling and practical automation. Projects by Rich Davis.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <div class="container">
+      <a href="/" class="nav-name">Rich Davis <span class="nav-sep">/</span> vgcrld</a>
+      <div class="nav-links">
+        <a href="https://github.com/vgcrld" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/vgcrld" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:vgcrld@gmail.com">Email</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <section class="hero">
+      <div class="container">
+        <h1>Infrastructure tooling<br>and practical automation.</h1>
+        <p>A collection of things I've built for work, for clients, and for fun.</p>
+      </div>
+    </section>
+
+    <section class="projects">
+      <div class="container" id="projects-container">
+        <!-- Rendered by projects.js -->
+      </div>
+    </section>
+
+    <section class="about">
+      <div class="container">
+        <h2>About</h2>
+        <p>I'm Rich Davis, a developer focused on infrastructure tooling, automation, and systems that do the boring parts reliably. I mostly work in Go and PowerShell, usually pointed at enterprise infrastructure. These are some of the projects I keep around.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <span class="footer-copy">© 2026 Rich Davis</span>
+      <div class="footer-links">
+        <a href="https://github.com/vgcrld" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/vgcrld" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:vgcrld@gmail.com">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="projects.js"></script>
+  <script>
+    const CATEGORY_ORDER = [
+      "Hardcore Tech",
+      "Utility",
+      "Risk Management",
+      "For Fun"
+    ];
+
+    const container = document.getElementById("projects-container");
+
+    const grouped = {};
+    PROJECTS.forEach(p => {
+      if (!grouped[p.category]) grouped[p.category] = [];
+      grouped[p.category].push(p);
+    });
+
+    const orderedCategories = [
+      ...CATEGORY_ORDER.filter(c => grouped[c]),
+      ...Object.keys(grouped).filter(c => !CATEGORY_ORDER.includes(c))
+    ];
+
+    orderedCategories.forEach(category => {
+      const section = document.createElement("div");
+      section.className = "category";
+
+      const heading = document.createElement("div");
+      heading.className = "category-heading";
+      heading.innerHTML = `<span>${category}</span>`;
+      section.appendChild(heading);
+
+      grouped[category].forEach(project => {
+        const card = document.createElement("div");
+        card.className = "project-card";
+        card.innerHTML = `
+          <div class="project-header">
+            <span class="project-name">${project.name}</span>
+            <a class="project-link" href="${project.url}" target="_blank" rel="noopener">View on GitHub →</a>
+          </div>
+          <p class="project-desc">${project.description}</p>
+          <div class="project-tags">
+            ${project.tags.map(t => `<span class="tag">${t}</span>`).join("")}
+          </div>
+        `;
+        section.appendChild(card);
+      });
+
+      container.appendChild(section);
+    });
+  </script>
+
+</body>
+</html>
